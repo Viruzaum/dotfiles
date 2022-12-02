@@ -1,0 +1,246 @@
+# i3 config file (v4)
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+#
+# Colors
+#
+
+# Focused color
+set $f_col #c6a0f6
+
+# Unfocused color
+set $uf_col #171714
+
+# Focused inactive color
+set $f_in_col #131313
+
+# Urgent color
+set $ug_col #ff6600
+
+#
+# Variables
+#
+
+# Set mod to Super key
+set $mod Mod4
+
+# Terminal
+set $term alacritty
+
+# Launcher
+# set $menu j4-dmenu-desktop --dmenu="dmenu --nf '#c6a0f6' --nb '#171714' --sb '#c6a0f6' --sf '#171714' -i -f"
+set $menu rofi -show drun -display-drun Run: -theme dmenu-purple
+
+# Browser
+set $browser firefox
+
+# File Manager
+set $fm dolphin
+
+# Screenshots
+set $screenshot_area    scrot -s -f -i $HOME/Pictures/Screenshots/%F_%T_$wx$h.png -e 'xclip -selection clipboard -target image/png -i $f'
+set $screenshot_window  scrot -u -i    $HOME/Pictures/Screenshots/%F_%T_$wx$h.png -e 'xclip -selection clipboard -target image/png -i $f'
+set $screenshot_monitor scrot -i       $HOME/Pictures/Screenshots/%F_%T_$wx$h.png -e 'xclip -selection clipboard -target image/png -i $f'
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+#
+# Settings
+#
+
+# Font
+font pango:Fira Code SemiBold 10
+
+# Default layout mode
+workspace_layout default
+
+# Title alignment
+title_align center
+
+# Default border
+default_border pixel 2
+
+# Floating size
+floating_minimum_size 256 x 128
+floating_maximum_size 2000 x 1000
+
+# Fullscreen popup
+popup_during_fullscreen smart
+
+# Gaps
+gaps inner 10
+gaps outer -10
+#border_radius 10
+smart_gaps inverse_outer
+smart_borders on
+
+#
+# Window rules
+#
+
+# Better handling of floating windows
+for_window [window_role="pop-up|task_dialog"] floating enable
+for_window [title="Steam - News|Steam - Self Updater"] floating enable
+for_window [window_role="PictureInPicture"] sticky enable
+
+# Assign windows to workspaces
+assign [class="discord"] 3
+assign [class="firefox"] 2
+# assign [class="Steam"] 5
+# Spotify needs a `for_window` to work
+for_window [class="Spotify"] move --no-auto-back-and-forth container to workspace 6
+
+#
+# Keybinds
+#
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# Terminal
+bindsym $mod+Return exec $term
+
+# Menu
+bindsym $mod+d exec $menu
+
+# Screenshot
+bindsym --release Print exec $screenshot_area
+bindsym --release Shift+Print exec $screenshot_window
+bindsym --release Ctrl+Print exec $screenshot_monitor
+
+# Browser
+bindsym $mod+b exec $browser
+
+# File manager
+bindsym $mod+e exec $fm
+
+# Mic toggle
+bindsym Pause exec ~/.local/bin/mic.sh
+
+# Kill focused window
+bindsym $mod+q kill
+
+# Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Mute audio
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+
+# Switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# Change focus
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Reload the configuration file
+bindsym $mod+Shift+e reload
+# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# Exit i3 (logs you out of your X session)
+bindsym $mod+Shift+q exec i3-msg exit
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# Split direction
+bindsym $mod+v layout toggle split
+
+# Toggle sticky
+bindsym $mod+x sticky toggle
+
+# Toggle floating
+bindsym $mod+c floating toggle
+
+# Enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# Change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+#
+# Theme
+#
+
+# Class                 border      background      text            indicator   child_border
+client.focused          $f_col      $f_col          $uf_col          $f_col      $f_col
+client.focused_inactive $f_in_col   $uf_col         $f_col          $f_in_col   $f_in_col
+client.unfocused        $uf_col     $uf_col         $f_col          $uf_col     $uf_col
+client.urgent           $ug_col     $uf_col         $ug_col         $ug_col     $ug_col
+client.placeholder      #1C1B22     $uf_col         $f_col          #1C1B22     #1C1B22
+client.background       $f_col
+
+#
+# Autostart
+#
+
+# Polkit
+exec --no-startup-id /usr/lib/polkit-kde-authentication-agent-1
+# Bar
+exec_always ~/.config/polybar/launch.sh
+# Wallpaper
+exec_always --no-startup-id feh --bg-fill -B \#1C1B22 --randomize ~/Pictures/wallpaper
+# gamemode daemon
+exec dbus-launch gamemoded
+# dunst (notification daemon)
+exec --no-startup-id dunst
+# fcitx5 (jp typing)
+exec --no-startup-id fcitx5 -d
+# Steam
+exec steam -silent
+# Premid
+exec --no-startup-id premid
+# Discord
+exec discord
+# Password manager (Bitwarden)
+exec bitwarden
+# KDEConnect tray
+exec kdeconnect-indicator
+# Birdtray
+exec flatpak run com.ulduzsoft.Birdtray
