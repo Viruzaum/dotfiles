@@ -91,8 +91,7 @@ for_window [window_role="PictureInPicture"] sticky enable
 
 # Assign windows to workspaces
 assign [class="discord"] 3
-# assign [class="firefox"] 2
-for_window [class="firefox"] move --no-auto-back-and-forth container to workspace 2
+assign [class="firefox"] 2
 # Spotify workaround
 for_window [class="Spotify"] move --no-auto-back-and-forth container to workspace 6
 
